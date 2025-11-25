@@ -47,7 +47,7 @@ sudo apt-get install tesseract-ocr libtesseract-dev
 sudo apt-get install tesseract-ocr-spa
 ```
 
-## 📦 Installation
+## Installation
 This package is designed to be installed as a plugin within the Sinapsis environment.
 
 1. Clone or navigate to the root of the `sinapsis-ocr` repository.
@@ -63,7 +63,7 @@ pip install -e packages/sinapsis_pytesseract
 ```
 > **Note:** This command reads the `pyproject.toml` file and installs all necessary Python libraries (pytesseract, opencv-python, etc.) automatically.
 
-## 🏃 Usage
+## Usage
 To execute the agent with the full preprocessing pipeline (Grayscale -> Blur -> Invert -> Auto-Scan), run:
 
 ```bash
@@ -94,17 +94,6 @@ The `PytesseractOCR` template can be configured in the YAML file. Below are the 
     min_confidence: 0.4
 ```
 
-## 🛠 Troubleshooting
-
-**Error: TesseractNotFoundError**
-* **Solution:** Ensure Tesseract is installed in your OS and added to the PATH. Run `tesseract --version` in your terminal to verify.
-
-**Error: Spanish language not found**
-* **Solution:** Install `tesseract-ocr-spa` (Linux) or re-run the Windows installer and select Spanish.
-
-**Issue: Agent detects "UDLAP" watermarks as text.**
-* **Solution:** Ensure the `MedianBlurWrapper` and `InvertImgWrapper` are active in the YAML config (as seen in `pytesseract_textIdInference.yaml`).
-
-## 👤 Author
+## Author
 Roberto Benitez
 Sinapsis AI Internship Project
