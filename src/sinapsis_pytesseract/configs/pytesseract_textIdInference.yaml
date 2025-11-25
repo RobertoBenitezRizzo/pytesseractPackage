@@ -1,0 +1,67 @@
+agent:
+  name: Pytesseract_OCR_Agent
+  description: "Agent to read image from folder, perform pytesseract prediction and save the inference image in file."
+
+templates:
+- template_name: InputTemplate
+  class_name: InputTemplate
+  attributes: {}
+
+- template_name: FolderImageDatasetCV2
+  class_name: FolderImageDatasetCV2
+  template_input: InputTemplate
+  attributes:
+    data_dir: /home/roberto/Desktop
+
+- template_name: ToGrayWrapper
+  class_name: ToGrayWrapper
+  template_input: FolderImageDatasetCV2
+  attributes:
+    apply_to_annotations: False
+    togray_init:
+      method: "weighted_average"
+      num_output_channels: 3
+      p: 1.0
+
+- template_name: MedianBlurWrapper
+  class_name: MedianBlurWrapper
+  template_input: ToGrayWrapper
+  attributes:
+    apply_to_annotations: False
+    medianblur_init:
+      blur_limit: 5
+      p: 1.0
+
+- template_name: InvertImgWrapper
+  class_name: InvertImgWrapper
+  template_input: MedianBlurWrapper
+  attributes:
+    apply_to_annotations: False
+    invertimg_init:
+      p: 1.0
+
+- template_name: PytesseractOCR
+  class_name: PytesseractOCR
+  template_input: InvertImgWrapper
+  attributes:
+    tesseract_params:
+      lang: spa
+      psm: 3
+    perspective_params:
+      enable: True
+      min_area: 5000.0
+    min_confidence: 0.4
+
+- template_name: BBoxDrawer
+  class_name: BBoxDrawer
+  template_input: PytesseractOCR
+  attributes:
+    draw_confidence: True
+    draw_extra_labels: True
+
+- template_name: ImageSaver
+  class_name: ImageSaver
+  template_input: BBoxDrawer
+  attributes:
+    save_dir: dataset
+    root_dir: /home/roberto/PycharmProjects/sinapsis-ocr
